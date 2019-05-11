@@ -35,12 +35,16 @@ int32_t main(int32_t argc, char **argv) {
 
         cluon::OD4Session od4{static_cast<uint16_t>(std::stoi(commandlineArguments["cid"]))};
 
-        auto SwitchStateReading = [](cluon::data::Envelope &&env){
+        auto SwitchStateReading = [VERBOSE](cluon::data::Envelope &&env){
             opendlv::proxy::SwitchStateReading p = cluon::extractMessage<opendlv::proxy::SwitchStateReading>(std::move(env));
             if(env.senderStamp() == 1406){
-                std::cout << "1900: msg: " << p.state()<< std::endl;
+                if (VERBOSE){
+                    std::cout << "1900: msg: " << p.state()<< std::endl;
+                }
             }else if (env.senderStamp() == 1091){
-                std::cout << "1901: msg: " << p.state()<< std::endl;
+                if (VERBOSE){
+                    std::cout << "1901: msg: " << p.state()<< std::endl;
+                }
             }
         };
         od4.dataTrigger(opendlv::proxy::SwitchStateReading::ID(), SwitchStateReading);
