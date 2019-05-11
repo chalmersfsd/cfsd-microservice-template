@@ -38,7 +38,7 @@ It includes two standard message sets:
     * If cfsd-extended-message-set is not needed in the program, please remove the file along with the releated lines in cmake file.
 
 ### Travis:
-To enabel travis use `travis encrypt`
+To enabel travis, remove `secure` settings in travis.yml file and then use `travis encrypt` to generate new secure keys
 
 ## Some Tools:
 
