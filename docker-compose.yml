@@ -2,6 +2,6 @@ version: '2'
 
 services: 
     cfsd-template:
-        image: cfsd-template:v0.0.0
+        image: chalmersfsd/cfsd-template:v0.0.0
         network_mode: "host"
-        command: "template --cid=111 --verbose"
+        command: "template --cid=131 --verbose"

@@ -3,7 +3,7 @@ This is a microservice template for Chalmers Formula Student Driverless 19.
 
 Run the image:
 ```
-docker run --rm --net=host cfsd-template:v0.0.0 --cid=131 --verbose
+docker run --rm --net=host chalmersfsd/cfsd-template:v0.0.0 --cid=131 --verbose
 ```
 Or
 ```
@@ -12,7 +12,7 @@ docker-compose up
 
 Build the image:
 ```
-docker build -t cfsd-template:v0.0.0 -f Dockerfile.amd64 .
+docker build -t chalmersfsd/cfsd-template:v0.0.0 -f Dockerfile.amd64 .
 ```
 
 ## Features:
@@ -22,14 +22,6 @@ There are two very basic message exchange service in the template:
 2. two data triggered message receivers.
 
 To add your logic and services you need to modify the Dockerfile.amd64 and CMakeLists.txt
-
-Note: mutiple time triggered require mutiple threading and mutixs (if necessary)
-```
-std::thread threadName(lambdaFunction);
-
-std::mutex xxx_update_mutex; //use mutix 
-
-```
 
 ### Message sets
 It includes two standard message sets:
