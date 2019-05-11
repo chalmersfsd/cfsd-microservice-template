@@ -28,13 +28,15 @@ int32_t main(int32_t argc, char **argv) {
         std::cerr << argv[0] << "template for message exchange between microservices." << std::endl;
         std::cerr << "Usage:   " << argv[0] << " --cid=<OD4 session> [--verbose]" << std::endl;
         std::cerr << "         --cid:    CID of the OD4Session to send and receive messages" << std::endl;
-        std::cerr << "Example: " << argv[0] << " --cid=253 --content=0 --verbose" << std::endl;
+        std::cerr << "Example: " << argv[0] << " --cid=131 --verbose" << std::endl;
     }
     else {
         const bool VERBOSE{commandlineArguments.count("verbose") != 0};
         uint16_t cid = static_cast<uint16_t>(std::stoi(commandlineArguments["cid"]));
         cluon::OD4Session od4{cid};
         std::cerr <<  "Start conversation at Opendlv session cid: "<< cid << std::endl;
+
+        
         auto SwitchStateReading = [VERBOSE](cluon::data::Envelope &&env){
             opendlv::proxy::SwitchStateReading p = cluon::extractMessage<opendlv::proxy::SwitchStateReading>(std::move(env));
             if(env.senderStamp() == 1406){
