@@ -1,7 +1,6 @@
 # cfsd-microservice-template
 This is a microservice template for Chalmers Formula Student Driverless 19.
 
-
 Run the image:
 ```
 docker run --rm --net=host cfsd-template:v0.0.0 --cid=131 --verbose
@@ -17,6 +16,7 @@ docker build -t cfsd-template:v0.0.0 -f Dockerfile.amd64 .
 ```
 
 ## Features:
+### sevices
 There are two very basic message exchange service in the template:
 1. a time triggered message sender running in 2Hz. 
 2. two data triggered message receivers.
@@ -31,12 +31,14 @@ std::mutex xxx_update_mutex; //use mutix
 
 ```
 
+### Message sets
 It includes two standard message sets:
 1. opendlv-standard-message-set
 2. cfsd-extended-message-set
     * If cfsd-extended-message-set is not needed in the program, please remove the file along with the releated lines in cmake file.
 
-Travis:
+### Travis:
+To enabel travis use `travis encrypt`
 
 ## Some Tools:
 

@@ -1,0 +1,38 @@
+os: linux
+
+language: cpp
+
+sudo: required
+
+branches:
+  only:
+  - "/^test.*$/"
+  - "/^v.*$/"
+
+services:
+- docker
+
+addons:
+  apt:
+    update: true
+
+env:
+  global:
+  - DOCKERHUB='chalmersfsd'
+  - IMAGE=`echo ${TRAVIS_REPO_SLUG#*/}`
+  - secure: i5kx3B4q/PbIVm4YPX50yC1ewL7+Lnx+OKnOEaIW2FyhMfNd4xsN1Or+a8JNv/TfIFCezqCegzoEigB2ouiuQCPmfrOfEbpb73xPZ3YRbntMO/kgYr9l1SoJkZBFsD3wWnckjgrYy0rojBLneLwbx2+OX34N69TaLXT5HCgrBHAbb1yzaSm2bZNPvPMOJpE7WaDOxhhyDP3MxCdIvHXyXOynOAL4I1o3YNY5isFvkCYv8qylok5/N96t+mxTT9yPydBaVhMJGg/J7VpUCev47slQJXhMuzpVi/PschlzC8birO9KpdK9OnwItugBRSJ1CYzg/jk9c9KSf0kMv/gw1mx7nmOMhy7Kvlj881a9nOKJyDvn9Ul3JFEj1uzEBk4J8dQS0dn5LYbU0vEHQ+iziYIy9g2o3M4+N/cRepO9EIgMAysB8k/3x0QAuHSgXt43ImH449wL7cocPE8GnTCBGeMfWFbOuhDC7ukLsYkNU3JP5sgIvLWh3wNww+eLFFbRPTSXyb55xR1GEfdEIS7pWCqMJ95vxngjiEjsuhgDG6lVRpEfk2ncph5ePqgLG0l9S5ZXMWGQLhP/BzEF78a8orTrSwr+5Whp+R4KBYInZ1UeTrtIagVYM7K/OH1BbsRtHFhfneeuzQEJVIT/Ncvu4UeZVSXYz8TE2J48ZsDcGP0=
+  - secure: v2dD+VOFMGSO6IOAF/DQssOcyYmniX31bOHMP9MMhF6btoHujZ1MIHJW+TsF7hNFa0pbncPhQ4tmy2np2R4gg3cPqmCry2BuH8+pyrQn6xSVXtKflDgmKFNLsNS9g38CAiwVwnr3ceqSMU+JFAhUza0pGspOJI/yn46JWWgTHx6ZIAWpsb7wa0WUeFYWqEipUgz6AE5hYbCE9OFiCo1jYaoEIu/I3DsKIOqKiv4JGOR6iz8V0S3HgvOp3pRs408Bc+D9rkWSSGVm5ZmmawT4vPJZWrnKN39j4i9KZcTZw1Dw7TPxZOIdkhiTuSFqN7rjfLBAtw3q2rZLHfIdgUXr24CiPvgMbP3uONMosE2mTtt+Gwq/z/tNA3JXiufXhQniBDJcQaEahrZYMwYpgGsIrgPXoi9xc2nqhM4RY09M6//GprGfg3BVErfPhuvbl44xtkWzn/5m1TV7/7QXZMubfCUaWl2ZeZCeZrbQ8g4C+mKfGk5JX6WGMuD0P9bDRL3YFBkk4tQ1c7nOS1drYG/Ml/wibY/55OrKkVsxz03nQvjkK7Z0GzdBNg8mybzrKD/AjsP5U2A55mYqrzznhfyejhsKDMeuUGxDxWJt9/NVOzXbDbztU9F4Q7OJeB4urAjWpColPKgkwWLwOg6RcLEJE4k+xt71PG0ZLERGKDBvj00=
+
+install:
+- docker build -f Dockerfile.amd64 -t ${IMAGE} .
+
+script: skip
+
+after_success:
+- echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+- if [[ "${TRAVIS_BRANCH}" == *test* ]]; then docker tag ${IMAGE} ${DOCKERHUB}/${IMAGE}:${TRAVIS_BRANCH}${TRAVIS_BUILD_NUMBER}; docker push ${DOCKERHUB}/${IMAGE}:${TRAVIS_BRANCH}${TRAVIS_BUILD_NUMBER}; echo "${DOCKERHUB}/${IMAGE}:${TRAVIS_BRANCH}${TRAVIS_BUILD_NUMBER}"; else docker tag ${IMAGE} ${DOCKERHUB}/${IMAGE}:${TRAVIS_BRANCH}; docker push ${DOCKERHUB}/${IMAGE}:${TRAVIS_BRANCH}; echo "${DOCKERHUB}/${IMAGE}:${TRAVIS_BRANCH}"; fi
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never
