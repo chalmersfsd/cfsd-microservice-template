@@ -32,6 +32,8 @@ It includes two standard message sets:
 ### Travis:
 To enabel travis, remove `secure` settings in travis.yml file and then use `travis encrypt` to generate new secure keys
 
+Branches named by `Test*` and tags will be automatically uploaded to our Docker hub
+ 
 ## Some Tools:
 
 To exam the opendlv standard message reading:
