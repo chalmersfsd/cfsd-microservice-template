@@ -20,6 +20,7 @@ project(cfsd-microservice-template)
 ################################################################################
 # Defining the relevant versions of OpenDLV Standard Message Set and libcluon.
 set(OPENDLV_STANDARD_MESSAGE_SET opendlv-standard-message-set-v0.9.7.odvd)
+set(CFSD_EXTENDED_MESSAGE_SET cfsd-extended-message-set-v0.0.1.odvd)
 set(CLUON_COMPLETE cluon-complete-v0.0.121.hpp)
 
 ################################################################################
@@ -75,6 +76,12 @@ add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/opendlv-standard-message-set.hpp
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     COMMAND ${CMAKE_BINARY_DIR}/cluon-msc --cpp --out=${CMAKE_BINARY_DIR}/opendlv-standard-message-set.hpp ${CMAKE_CURRENT_SOURCE_DIR}/src/${OPENDLV_STANDARD_MESSAGE_SET}
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/${OPENDLV_STANDARD_MESSAGE_SET} ${CMAKE_BINARY_DIR}/cluon-msc)
+# Generate cfsd-extended-message-set.hpp from ${CFSD_EXTENDED_MESSAGE_SET} file.
+add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/cfsd-extended-message-set.hpp
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMAND ${CMAKE_BINARY_DIR}/cluon-msc --cpp --out=${CMAKE_BINARY_DIR}/cfsd-extended-message-set.hpp ${CMAKE_CURRENT_SOURCE_DIR}/src/${CFSD_EXTENDED_MESSAGE_SET}
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/${CFSD_EXTENDED_MESSAGE_SET} ${CMAKE_BINARY_DIR}/cluon-msc)
+
 # Add current build directory as include directory as it contains generated files.
 include_directories(SYSTEM ${CMAKE_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -88,7 +95,8 @@ set(LIBRARIES Threads::Threads)
 ################################################################################
 # Create executable.
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
-add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}.cpp ${CMAKE_BINARY_DIR}/cluon-complete.hpp ${CMAKE_BINARY_DIR}/opendlv-standard-message-set.hpp)
+add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}.cpp ${CMAKE_BINARY_DIR}/cluon-complete.hpp ${CMAKE_BINARY_DIR}/opendlv-standard-message-set.hpp ${CMAKE_BINARY_DIR}/cfsd-extended-message-set.hpp)
+
 target_link_libraries(${PROJECT_NAME} ${LIBRARIES})
 
 ################################################################################

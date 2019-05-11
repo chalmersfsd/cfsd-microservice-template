@@ -18,7 +18,7 @@
 
 #include "cluon-complete.hpp"
 #include "opendlv-standard-message-set.hpp"
-
+#include "cfsd-extended-message-set.hpp"
 #include <cstdint>
 #include <iostream>
 
@@ -32,9 +32,9 @@ int32_t main(int32_t argc, char **argv) {
     }
     else {
         const bool VERBOSE{commandlineArguments.count("verbose") != 0};
-
-        cluon::OD4Session od4{static_cast<uint16_t>(std::stoi(commandlineArguments["cid"]))};
-
+        uint16_t cid = static_cast<uint16_t>(std::stoi(commandlineArguments["cid"]));
+        cluon::OD4Session od4{cid};
+        std::cerr <<  "Start conversation at Opendlv session cid: "<< cid << std::endl;
         auto SwitchStateReading = [VERBOSE](cluon::data::Envelope &&env){
             opendlv::proxy::SwitchStateReading p = cluon::extractMessage<opendlv::proxy::SwitchStateReading>(std::move(env));
             if(env.senderStamp() == 1406){
@@ -52,10 +52,20 @@ int32_t main(int32_t argc, char **argv) {
         uint32_t counter{0};
         auto ping = [&od4, &counter](){
             // Define a message...
-            cluon::data::TimeStamp now{cluon::time::now()};
-            opendlv::proxy::SwitchStateRequest msg;
-            msg.state(counter);
-            od4.send(msg, now, 1902);
+            {
+                cluon::data::TimeStamp now{cluon::time::now()};
+                opendlv::proxy::SwitchStateRequest msg;
+                msg.state(counter);
+                od4.send(msg, now, 1902);
+            }
+            {
+                cluon::data::TimeStamp now{cluon::time::now()};
+                opendlv::cfsdProxy::TorqueRequestDual msg;
+                msg.torqueLeft(1000);
+                msg.torqueRight(1000);
+                od4.send(msg, now, 1902);
+            }
+
             return true;
         };
         // Finally, register the lambda as time-triggered function.
