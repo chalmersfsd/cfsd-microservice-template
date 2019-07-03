@@ -38,15 +38,15 @@ Branches named by `test*` and tags will be automatically uploaded to our Docker 
 
 To exam the opendlv standard message reading:
 ```
-docker run --rm --net=host -p 8080:8080 chalmersreveropendlv-signal-viewer-multi:v0.0.8 --cid=111
+docker run --rm --net=host -p 8080:8080 chalmersreveropendlv-signal-viewer-multi:v0.0.8 --cid=130
 ```
 
 To exam the cfsd-extended-message reading:
 ```
-docker run --rm -ti --init --net=host -v $PWD:/opchrberger/cluon-livefeed-multi:v0.0.121 --cid=111 --odvd=/opt/src/cfsd-extended-message-set-v0.0.1.odvd
+docker run --rm -ti --init --net=host -v $PWD:/opchrberger/cluon-livefeed-multi:v0.0.121 --cid=130 --odvd=/opt/src/cfsd-extended-message-set-v0.0.1.odvd
 ```
 
 To send the messages in opendlv-standard-message-set:
 ```
-docker run --rm -ti --net=host wangroger0801/cfsd-message-controller:v0.0.3 --cid=111
+docker run --rm -ti --net=host wangroger0801/cfsd-message-controller:v0.0.5 --cid=130
 ```
