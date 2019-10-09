@@ -38,7 +38,7 @@ Branches named by `test*` and tags will be automatically uploaded to our Docker 
 
 To exam the opendlv standard message reading:
 ```
-docker run --rm --net=host -p 8080:8080 chalmersreveropendlv-signal-viewer-multi:v0.0.8 --cid=130
+docker run --rm --net=host -p 8080:8080 chalmersrevere/opendlv-signal-viewer-multi:v0.0.8 --cid=130
 ```
 
 To exam the cfsd-extended-message reading:
